@@ -12,6 +12,8 @@ import {
   StatusBar
 } from "react-native";
 
+import * as ImagePicker from "expo-image-picker";
+
 import { DetalheStyle } from "./DetalheOSStyle";
 import { Footer } from "../../components/footer/Footer";
 import { api } from "../../services/api";
@@ -26,39 +28,42 @@ export const DetalheOS = ({ route, navigation }) => {
 
   const [imagemExpandida, setImagemExpandida] = useState(false);
 
-  const URL_API = "http://172.16.36.24:5175";
+  // FOTO NOVA
+  const [fotoNova, setFotoNova] = useState(null);
 
+  // IP ATUAL DA API
+  const URL_API = "http://172.16.1.174:5175";
 
   // =====================================================
   // FORMATAR DATA E HORA
   // =====================================================
 
- const formatarDataHora = (data) => {
+  const formatarDataHora = (data) => {
 
-  if (!data) {
-    return "Data não informada";
-  }
+    if (!data) {
+      return "Data não informada";
+    }
 
-  const dataObj = new Date(data);
+    const dataObj = new Date(data);
 
-  if (isNaN(dataObj.getTime())) {
-    return "Data inválida";
-  }
+    if (isNaN(dataObj.getTime())) {
+      return "Data inválida";
+    }
 
-  const dataFormatada = dataObj.toLocaleDateString("pt-BR", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  });
+    const dataFormatada = dataObj.toLocaleDateString("pt-BR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric"
+    });
 
-  const horaFormatada = dataObj.toLocaleTimeString("pt-BR", {
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit"
-  });
+    const horaFormatada = dataObj.toLocaleTimeString("pt-BR", {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit"
+    });
 
-  return `${dataFormatada}, ${horaFormatada}`;
-};
+    return `${dataFormatada}, ${horaFormatada}`;
+  };
 
   // =====================================================
   // BUSCAR OS
@@ -70,25 +75,31 @@ export const DetalheOS = ({ route, navigation }) => {
 
       setCarregando(true);
 
-      console.log("Buscando OS:", idOS);
+      console.log("====================================");
+      console.log("BUSCANDO OS:", idOS);
+      console.log("====================================");
 
-      const resposta =
-        await api.get(`/OrdemServico/${idOS}`);
-
-      console.log(
-        "OS encontrada:",
-        resposta.data
+      const resposta = await api.get(
+        `/OrdemServico/${idOS}`
       );
+
+      console.log("====================================");
+      console.log("OS ENCONTRADA:");
+      console.log(resposta.data);
+      console.log("FOTO:");
+      console.log(resposta.data?.fotoProblema);
+      console.log("====================================");
 
       setOs(resposta.data);
 
     } catch (erro) {
 
-      console.log(
-        "========== ERRO AO BUSCAR OS =========="
-      );
-
-      console.log("Erro:", erro);
+      console.log("====================================");
+      console.log("ERRO AO BUSCAR OS");
+      console.log(erro);
+      console.log("STATUS:", erro.response?.status);
+      console.log("DADOS:", erro.response?.data);
+      console.log("====================================");
 
       if (erro.response) {
 
@@ -108,10 +119,152 @@ export const DetalheOS = ({ route, navigation }) => {
     } finally {
 
       setCarregando(false);
-
     }
   };
 
+  // =====================================================
+  // TIRAR FOTO
+  // =====================================================
+
+  const tirarFoto = async () => {
+
+    try {
+
+      const permissao =
+        await ImagePicker.requestCameraPermissionsAsync();
+
+      if (!permissao.granted) {
+
+        Alert.alert(
+          "Permissão necessária",
+          "Permita o acesso à câmera para tirar uma foto."
+        );
+
+        return;
+      }
+
+      const resultado =
+        await ImagePicker.launchCameraAsync({
+          mediaTypes: ["images"],
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 0.8
+        });
+
+      if (
+        !resultado.canceled &&
+        resultado.assets?.length > 0
+      ) {
+
+        const foto =
+          resultado.assets[0].uri;
+
+        console.log("====================================");
+        console.log("NOVA FOTO DA OS:");
+        console.log(foto);
+        console.log("====================================");
+
+        setFotoNova(foto);
+      }
+
+    } catch (erro) {
+
+      console.log(
+        "ERRO AO ABRIR CÂMERA:",
+        erro
+      );
+
+      Alert.alert(
+        "Erro",
+        "Não foi possível abrir a câmera."
+      );
+    }
+  };
+
+  // =====================================================
+  // ESCOLHER FOTO DA GALERIA
+  // =====================================================
+
+  const escolherFoto = async () => {
+
+    try {
+
+      const permissao =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+      if (!permissao.granted) {
+
+        Alert.alert(
+          "Permissão necessária",
+          "Permita o acesso às fotos para escolher uma imagem."
+        );
+
+        return;
+      }
+
+      const resultado =
+        await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ["images"],
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 0.8
+        });
+
+      if (
+        !resultado.canceled &&
+        resultado.assets?.length > 0
+      ) {
+
+        const foto =
+          resultado.assets[0].uri;
+
+        console.log("====================================");
+        console.log("FOTO ESCOLHIDA DA GALERIA:");
+        console.log(foto);
+        console.log("====================================");
+
+        setFotoNova(foto);
+      }
+
+    } catch (erro) {
+
+      console.log(
+        "ERRO AO ABRIR GALERIA:",
+        erro
+      );
+
+      Alert.alert(
+        "Erro",
+        "Não foi possível abrir a galeria."
+      );
+    }
+  };
+
+  // =====================================================
+  // ESCOLHER COMO ADICIONAR FOTO
+  // =====================================================
+
+  const selecionarFoto = () => {
+
+    Alert.alert(
+      "Foto do Problema",
+      "Escolha uma opção:",
+      [
+        {
+          text: "Tirar foto",
+          onPress: tirarFoto
+        },
+        {
+          text: "Escolher da galeria",
+          onPress: escolherFoto
+        },
+        {
+          text: "Cancelar",
+          style: "cancel"
+        }
+      ]
+    );
+  };
 
   // =====================================================
   // EXCLUIR OS
@@ -121,9 +274,7 @@ export const DetalheOS = ({ route, navigation }) => {
 
     Alert.alert(
       "Excluir Ordem de Serviço",
-
       "Tem certeza que deseja excluir esta Ordem de Serviço?",
-
       [
         {
           text: "Cancelar",
@@ -132,7 +283,6 @@ export const DetalheOS = ({ route, navigation }) => {
 
         {
           text: "Excluir",
-
           style: "destructive",
 
           onPress: async () => {
@@ -145,13 +295,10 @@ export const DetalheOS = ({ route, navigation }) => {
 
               Alert.alert(
                 "Sucesso",
-
                 "Ordem de Serviço excluída com sucesso!",
-
                 [
                   {
                     text: "OK",
-
                     onPress: () =>
                       navigation.replace("ListaOS")
                   }
@@ -176,7 +323,6 @@ export const DetalheOS = ({ route, navigation }) => {
     );
   };
 
-
   // =====================================================
   // BUSCAR OS AO ABRIR
   // =====================================================
@@ -189,9 +335,8 @@ export const DetalheOS = ({ route, navigation }) => {
 
   }, [idOS]);
 
-
   // =====================================================
-  // URL DA FOTO
+  // URL DA FOTO DA API
   // =====================================================
 
   const getUrlFoto = () => {
@@ -200,25 +345,43 @@ export const DetalheOS = ({ route, navigation }) => {
       return null;
     }
 
-    const foto = os.fotoProblema;
+    const foto =
+      String(os.fotoProblema).trim();
 
+    console.log("====================================");
+    console.log("FOTO DA OS RECEBIDA:");
+    console.log(foto);
+    console.log("====================================");
+
+    // URL completa
     if (
-      foto.startsWith("http") ||
-      foto.startsWith("data:")
+      foto.startsWith("http://") ||
+      foto.startsWith("https://")
     ) {
 
       return foto;
-
     }
 
+    // Base64
+    if (foto.startsWith("data:")) {
+
+      return foto;
+    }
+
+    // Caminho relativo
     const caminhoFormatado =
       foto.startsWith("/")
         ? foto
         : `/${foto}`;
 
-    return `${URL_API}${caminhoFormatado}`;
-  };
+    const urlFinal =
+      `${URL_API}${caminhoFormatado}`;
 
+    console.log("URL FINAL DA FOTO:");
+    console.log(urlFinal);
+
+    return urlFinal;
+  };
 
   // =====================================================
   // CARREGANDO
@@ -227,7 +390,6 @@ export const DetalheOS = ({ route, navigation }) => {
   if (carregando) {
 
     return (
-
       <View style={DetalheStyle.container}>
 
         <Text style={DetalheStyle.pageTitle}>
@@ -240,7 +402,6 @@ export const DetalheOS = ({ route, navigation }) => {
     );
   }
 
-
   // =====================================================
   // OS NÃO ENCONTRADA
   // =====================================================
@@ -248,7 +409,6 @@ export const DetalheOS = ({ route, navigation }) => {
   if (!os) {
 
     return (
-
       <View style={DetalheStyle.container}>
 
         <Text style={DetalheStyle.pageTitle}>
@@ -261,9 +421,11 @@ export const DetalheOS = ({ route, navigation }) => {
     );
   }
 
-
   const urlFoto = getUrlFoto();
 
+  // FOTO QUE SERÁ MOSTRADA
+  const fotoParaExibir =
+    fotoNova || urlFoto;
 
   // =====================================================
   // TELA
@@ -273,18 +435,9 @@ export const DetalheOS = ({ route, navigation }) => {
 
     <View style={DetalheStyle.container}>
 
-      {/* =================================================
-          TÍTULO
-      ================================================= */}
-
       <Text style={DetalheStyle.pageTitle}>
         Detalhes da OS-{os.numeroOS}
       </Text>
-
-
-      {/* =================================================
-          CONTEÚDO
-      ================================================= */}
 
       <ScrollView
         style={DetalheStyle.scroll}
@@ -294,27 +447,19 @@ export const DetalheOS = ({ route, navigation }) => {
 
         <View style={DetalheStyle.card}>
 
-          {/* =================================================
-              TÍTULO DA OS
-          ================================================= */}
+          {/* TÍTULO */}
 
           <Text style={DetalheStyle.osTitle}>
             {os.tituloProblema}
           </Text>
 
-
-          {/* =================================================
-              DATA E HORA DE PUBLICAÇÃO
-          ================================================= */}
+          {/* DATA */}
 
           <Text style={DetalheStyle.date}>
-            Criada em {formatarDataHora (os.dataCadastro)}
+            Criada em {formatarDataHora(os.dataCadastro)}
           </Text>
 
-
-          {/* =================================================
-              MÁQUINA
-          ================================================= */}
+          {/* MÁQUINA */}
 
           <View style={DetalheStyle.infoRow}>
 
@@ -338,10 +483,7 @@ export const DetalheOS = ({ route, navigation }) => {
 
           </View>
 
-
-          {/* =================================================
-              LOCAL
-          ================================================= */}
+          {/* LOCAL */}
 
           <View style={DetalheStyle.infoRow}>
 
@@ -365,10 +507,7 @@ export const DetalheOS = ({ route, navigation }) => {
 
           </View>
 
-
-          {/* =================================================
-              SOLICITANTE
-          ================================================= */}
+          {/* SOLICITANTE */}
 
           <View style={DetalheStyle.infoRow}>
 
@@ -392,17 +531,11 @@ export const DetalheOS = ({ route, navigation }) => {
 
           </View>
 
-
-          {/* =================================================
-              DIVISÓRIA
-          ================================================= */}
+          {/* DIVISÓRIA */}
 
           <View style={DetalheStyle.divider} />
 
-
-          {/* =================================================
-              DESCRIÇÃO
-          ================================================= */}
+          {/* DESCRIÇÃO */}
 
           <Text style={DetalheStyle.sectionTitle}>
             Descrição do Problema
@@ -412,46 +545,79 @@ export const DetalheOS = ({ route, navigation }) => {
             {os.descricaoProblema}
           </Text>
 
-
-          {/* =================================================
-              FOTO
-          ================================================= */}
+          {/* ================================================= */}
+          {/* FOTO DO PROBLEMA */}
+          {/* ================================================= */}
 
           <Text style={DetalheStyle.sectionTitle}>
             Foto do Problema
           </Text>
 
+          {/* BOTÃO FOTO */}
 
-          {urlFoto ? (
+          <TouchableOpacity
+            style={DetalheStyle.editButton}
+            activeOpacity={0.8}
+            onPress={selecionarFoto}
+          >
+
+            <Text style={DetalheStyle.editButtonText}>
+              📷 {fotoParaExibir ? "Alterar foto" : "Tirar foto"}
+            </Text>
+
+          </TouchableOpacity>
+
+          {/* FOTO */}
+
+          {fotoParaExibir ? (
 
             <TouchableOpacity
               style={DetalheStyle.imageTouchable}
               activeOpacity={0.85}
-              onPress={() => setImagemExpandida(true)}
+              onPress={() =>
+                setImagemExpandida(true)
+              }
             >
 
               <Image
                 source={{
-                  uri: urlFoto
+                  uri: fotoParaExibir
                 }}
-
                 style={DetalheStyle.problemImage}
-
                 resizeMode="cover"
+
+                onLoad={() => {
+
+                  console.log(
+                    "FOTO DA OS CARREGADA:",
+                    fotoParaExibir
+                  );
+
+                }}
 
                 onError={(e) => {
 
                   console.log(
-                    "Erro ao carregar imagem:",
-                    urlFoto,
-                    e.nativeEvent.error
+                    "ERRO AO CARREGAR FOTO DA OS:"
+                  );
+
+                  console.log(
+                    "URL:",
+                    fotoParaExibir
+                  );
+
+                  console.log(
+                    "ERRO:",
+                    e.nativeEvent
                   );
 
                 }}
               />
 
               <Text style={DetalheStyle.imageHint}>
-                Toque na imagem para ampliar
+                {fotoNova
+                  ? "Nova foto — toque para ampliar"
+                  : "Toque na imagem para ampliar"}
               </Text>
 
             </TouchableOpacity>
@@ -464,10 +630,9 @@ export const DetalheOS = ({ route, navigation }) => {
 
           )}
 
-
-          {/* =================================================
-              BOTÕES
-          ================================================= */}
+          {/* ================================================= */}
+          {/* BOTÕES */}
+          {/* ================================================= */}
 
           <View style={DetalheStyle.buttonsContainer}>
 
@@ -488,7 +653,6 @@ export const DetalheOS = ({ route, navigation }) => {
 
             </TouchableOpacity>
 
-
             <TouchableOpacity
               style={DetalheStyle.deleteButton}
               activeOpacity={0.8}
@@ -507,10 +671,9 @@ export const DetalheOS = ({ route, navigation }) => {
 
       </ScrollView>
 
-
-      {/* =====================================================
-          MODAL DA IMAGEM
-      ===================================================== */}
+      {/* ================================================= */}
+      {/* MODAL DA IMAGEM */}
+      {/* ================================================= */}
 
       <Modal
         visible={imagemExpandida}
@@ -523,21 +686,15 @@ export const DetalheOS = ({ route, navigation }) => {
 
         <View style={DetalheStyle.modalContainer}>
 
-          {/* STATUS BAR */}
-
           <StatusBar
             backgroundColor="#000"
             barStyle="light-content"
           />
 
-
-          {/* BOTÃO FECHAR */}
-
           <Pressable
             onPress={() =>
               setImagemExpandida(false)
             }
-
             style={DetalheStyle.closeButton}
           >
 
@@ -547,26 +704,20 @@ export const DetalheOS = ({ route, navigation }) => {
 
           </Pressable>
 
-
-          {/* IMAGEM */}
-
-          {urlFoto && (
+          {fotoParaExibir && (
 
             <Image
               source={{
-                uri: urlFoto
+                uri: fotoParaExibir
               }}
-
               style={DetalheStyle.expandedImage}
-
               resizeMode="contain"
 
               onError={(e) => {
 
                 console.log(
-                  "Erro ao carregar imagem expandida:",
-                  urlFoto,
-                  e.nativeEvent.error
+                  "ERRO NA FOTO EXPANDIDA:",
+                  e.nativeEvent
                 );
 
               }}
@@ -577,11 +728,6 @@ export const DetalheOS = ({ route, navigation }) => {
         </View>
 
       </Modal>
-
-
-      {/* =================================================
-          FOOTER
-      ================================================= */}
 
       <Footer navigation={navigation} />
 

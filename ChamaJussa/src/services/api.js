@@ -2,23 +2,16 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const api = axios.create({
-    baseURL: "http://172.16.36.24:5175/api",
-    timeout: 10000
+    baseURL: "http://172.16.1.174:5175/api",
+    timeout: 10000,
 });
 
-// Interceptor para adicionar o token automaticamente
-api.interceptors.request.use(
-    async (config) => {
+api.interceptors.request.use(async (config) => {
+    const token = await AsyncStorage.getItem("token");
 
-        const token = await AsyncStorage.getItem("token");
-
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
-        }
-
-        return config;
-    },
-    (erro) => {
-        return Promise.reject(erro);
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
     }
-);
+
+    return config;
+});

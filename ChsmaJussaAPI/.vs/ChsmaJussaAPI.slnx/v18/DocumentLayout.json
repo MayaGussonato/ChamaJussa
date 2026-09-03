@@ -1,20 +1,28 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\44788197855\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\",
+  "WorkspaceRootPath": "C:\\Users\\57039661837\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\",
   "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\57039661837\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\57039661837\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\44788197855\\Desktop\\Chama-Jussa\\ChamaJussa\\app.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\44788197855\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\DTOs\\UsuarioDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\57039661837\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\DTOs\\UsuarioDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:DTOs\\UsuarioDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\44788197855\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\DTOs\\OrdemServicoResponseDTO.cs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\57039661837\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\DTOs\\OrdemServicoResponseDTO.cs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:DTOs\\OrdemServicoResponseDTO.cs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\44788197855\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\DTOs\\LoginDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\57039661837\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\DTOs\\LoginDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:DTOs\\LoginDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -30,23 +38,47 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "app.json",
-              "DocumentMoniker": "C:\\Users\\44788197855\\Desktop\\Chama-Jussa\\ChamaJussa\\app.json",
-              "RelativeDocumentMoniker": "..\\ChamaJussa\\app.json",
-              "ToolTip": "C:\\Users\\44788197855\\Desktop\\Chama-Jussa\\ChamaJussa\\app.json",
-              "RelativeToolTip": "..\\ChamaJussa\\app.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAXAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-08-18T17:08:24.934Z",
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\57039661837\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\57039661837\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAEcAAAAAAAAAAADwv2AAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-03T16:52:26.149Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\57039661837\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\appsettings.json",
+              "RelativeDocumentMoniker": "appsettings.json",
+              "ToolTip": "C:\\Users\\57039661837\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\appsettings.json",
+              "RelativeToolTip": "appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-09-03T16:42:57.116Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "app.json",
+              "DocumentMoniker": "C:\\Users\\44788197855\\Desktop\\Chama-Jussa\\ChamaJussa\\app.json",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\44788197855\\Desktop\\Chama-Jussa\\ChamaJussa\\app.json",
+              "ToolTip": "C:\\Users\\44788197855\\Desktop\\Chama-Jussa\\ChamaJussa\\app.json",
+              "RelativeToolTip": "..\\..\\..\\..\\44788197855\\Desktop\\Chama-Jussa\\ChamaJussa\\app.json",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-08-18T17:08:24.934Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "UsuarioDTO.cs",
-              "DocumentMoniker": "C:\\Users\\44788197855\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\DTOs\\UsuarioDTO.cs",
+              "DocumentMoniker": "C:\\Users\\57039661837\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\DTOs\\UsuarioDTO.cs",
               "RelativeDocumentMoniker": "DTOs\\UsuarioDTO.cs",
-              "ToolTip": "C:\\Users\\44788197855\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\DTOs\\UsuarioDTO.cs",
+              "ToolTip": "C:\\Users\\57039661837\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\DTOs\\UsuarioDTO.cs",
               "RelativeToolTip": "DTOs\\UsuarioDTO.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -54,11 +86,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "OrdemServicoResponseDTO.cs.cs",
-              "DocumentMoniker": "C:\\Users\\44788197855\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\DTOs\\OrdemServicoResponseDTO.cs.cs",
+              "DocumentMoniker": "C:\\Users\\57039661837\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\DTOs\\OrdemServicoResponseDTO.cs.cs",
               "RelativeDocumentMoniker": "DTOs\\OrdemServicoResponseDTO.cs.cs",
-              "ToolTip": "C:\\Users\\44788197855\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\DTOs\\OrdemServicoResponseDTO.cs.cs",
+              "ToolTip": "C:\\Users\\57039661837\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\DTOs\\OrdemServicoResponseDTO.cs.cs",
               "RelativeToolTip": "DTOs\\OrdemServicoResponseDTO.cs.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -66,11 +98,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "LoginDTO.cs",
-              "DocumentMoniker": "C:\\Users\\44788197855\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\DTOs\\LoginDTO.cs",
+              "DocumentMoniker": "C:\\Users\\57039661837\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\DTOs\\LoginDTO.cs",
               "RelativeDocumentMoniker": "DTOs\\LoginDTO.cs",
-              "ToolTip": "C:\\Users\\44788197855\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\DTOs\\LoginDTO.cs",
+              "ToolTip": "C:\\Users\\57039661837\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\DTOs\\LoginDTO.cs",
               "RelativeToolTip": "DTOs\\LoginDTO.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",

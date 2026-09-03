@@ -17,8 +17,6 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { LoginStyle } from "./LoginStyle";
-import { api } from "../../services/api";
-
 
 export const Login = ({ navigation }) => {
 
@@ -26,7 +24,6 @@ export const Login = ({ navigation }) => {
     const [senha, setSenha] = useState("");
 
     const [carregando, setCarregando] = useState(false);
-
 
     // =====================================================
     // FAZER LOGIN
@@ -36,14 +33,16 @@ export const Login = ({ navigation }) => {
 
         Keyboard.dismiss();
 
-        console.log("API:", api.defaults.baseURL);
-
+        console.log("====================================");
+        console.log("TENTANDO FAZER LOGIN");
+        console.log("API:", "http://172.16.1.174:5175/api");
+        console.log("====================================");
 
         // =================================================
         // VALIDAR CAMPOS
         // =================================================
 
-        if (!email || !senha) {
+        if (!email.trim() || !senha.trim()) {
 
             Alert.alert(
                 "Atenção",
@@ -53,13 +52,11 @@ export const Login = ({ navigation }) => {
             return;
         }
 
-
         // =================================================
         // INICIA CARREGAMENTO
         // =================================================
 
         setCarregando(true);
-
 
         try {
 
@@ -67,35 +64,94 @@ export const Login = ({ navigation }) => {
             // LOGIN
             // =================================================
 
-            const resposta = await api.post(
-                "/Usuario/login",
+            const resposta = await fetch(
+                "http://172.16.1.174:5175/api/Usuario/login",
                 {
-                    email: email,
-                    senha: senha
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        email: email.trim(),
+                        senha: senha
+                    })
                 }
             );
 
+            console.log("STATUS DA API:", resposta.status);
 
-            console.log(
-                "Resposta da API:",
-                resposta.data
-            );
+            const texto = await resposta.text();
 
+            console.log("RESPOSTA DA API:", texto);
+
+            // =================================================
+            // ERRO DA API
+            // =================================================
+
+            if (!resposta.ok) {
+
+                let mensagem = `Erro ao fazer login. Status: ${resposta.status}`;
+
+                try {
+
+                    const erroJson = JSON.parse(texto);
+
+                    if (erroJson.message) {
+                        mensagem = erroJson.message;
+                    }
+
+                    if (erroJson.title) {
+                        mensagem = erroJson.title;
+                    }
+
+                } catch (e) {
+                    // Resposta não era JSON
+                }
+
+                Alert.alert(
+                    "Erro da API",
+                    mensagem
+                );
+
+                return;
+            }
+
+            // =================================================
+            // CONVERTER RESPOSTA
+            // =================================================
+
+            const dados = JSON.parse(texto);
+
+            console.log("DADOS DO LOGIN:", dados);
 
             // =================================================
             // PEGAR DADOS DO USUÁRIO
             // =================================================
 
-            const {
-                token,
-                idUsuario,
-                nome,
-                email: emailUsuario
-            } = resposta.data;
-
+            const token = dados.token;
+            const idUsuario = dados.idUsuario;
+            const nome = dados.nome;
+            const emailUsuario = dados.email;
 
             // =================================================
-            // SALVAR DADOS
+            // VALIDAR TOKEN
+            // =================================================
+
+            if (!token) {
+
+                Alert.alert(
+                    "Erro",
+                    "A API não retornou o token de autenticação."
+                );
+
+                return;
+            }
+
+            // =================================================
+            // SALVAR TOKEN
             // =================================================
 
             await AsyncStorage.setItem(
@@ -103,42 +159,49 @@ export const Login = ({ navigation }) => {
                 token
             );
 
-            await AsyncStorage.setItem(
-                "idUsuario",
-                idUsuario
-            );
+            // =================================================
+            // SALVAR ID DO USUÁRIO
+            // =================================================
 
-            await AsyncStorage.setItem(
-                "nome",
-                nome
-            );
+            if (idUsuario) {
 
-            await AsyncStorage.setItem(
-                "email",
-                emailUsuario
-            );
+                await AsyncStorage.setItem(
+                    "idUsuario",
+                    String(idUsuario)
+                );
+            }
 
+            // =================================================
+            // SALVAR NOME
+            // =================================================
 
-            console.log(
-                "Token salvo:",
-                token
-            );
+            if (nome) {
 
-            console.log(
-                "Usuário salvo:",
-                nome
-            );
+                await AsyncStorage.setItem(
+                    "nome",
+                    nome
+                );
+            }
 
-            console.log(
-                "ID salvo:",
-                idUsuario
-            );
+            // =================================================
+            // SALVAR E-MAIL
+            // =================================================
 
-            console.log(
-                "E-mail salvo:",
-                emailUsuario
-            );
+            if (emailUsuario) {
 
+                await AsyncStorage.setItem(
+                    "email",
+                    emailUsuario
+                );
+            }
+
+            console.log("====================================");
+            console.log("LOGIN REALIZADO COM SUCESSO");
+            console.log("Token salvo:", !!token);
+            console.log("Usuário:", nome);
+            console.log("ID:", idUsuario);
+            console.log("E-mail:", emailUsuario);
+            console.log("====================================");
 
             // =================================================
             // LOGIN REALIZADO
@@ -151,85 +214,31 @@ export const Login = ({ navigation }) => {
                     {
                         text: "OK",
 
-                        onPress: () =>
-                            navigation.replace("ListaOS")
+                        onPress: () => {
+                            navigation.replace("ListaOS");
+                        }
                     }
                 ]
             );
 
-
         } catch (erro) {
 
-            console.log(
-                "ERRO COMPLETO:",
-                erro
+            console.log("====================================");
+            console.log("ERRO AO FAZER LOGIN");
+            console.log("ERRO COMPLETO:", erro);
+            console.log("MENSAGEM:", erro.message);
+            console.log("====================================");
+
+            Alert.alert(
+                "Erro de conexão",
+                "Não foi possível conectar com a API.\n\nVerifique se o computador e o celular estão na mesma rede Wi-Fi."
             );
-
-            console.log(
-                "Mensagem:",
-                erro.message
-            );
-
-            console.log(
-                "Código:",
-                erro.code
-            );
-
-            console.log(
-                "Resposta:",
-                erro.response
-            );
-
-
-            // =================================================
-            // ERRO DA API
-            // =================================================
-
-            if (erro.response) {
-
-                Alert.alert(
-                    "Erro da API",
-                    `Status: ${erro.response.status}`
-                );
-
-
-            // =================================================
-            // ERRO DE CONEXÃO
-            // =================================================
-
-            } else if (erro.request) {
-
-                Alert.alert(
-                    "Erro de conexão",
-                    "O celular conseguiu iniciar a requisição, mas não recebeu resposta da API."
-                );
-
-
-            // =================================================
-            // OUTRO ERRO
-            // =================================================
-
-            } else {
-
-                Alert.alert(
-                    "Erro",
-                    erro.message
-                );
-
-            }
 
         } finally {
 
-            // =================================================
-            // FINALIZA CARREGAMENTO
-            // =================================================
-
             setCarregando(false);
-
         }
-
     };
-
 
     // =====================================================
     // TELA
@@ -269,7 +278,6 @@ export const Login = ({ navigation }) => {
                         resizeMode="contain"
                     />
 
-
                     {/* =================================================
                         CAIXA DE LOGIN
                     ================================================= */}
@@ -284,7 +292,6 @@ export const Login = ({ navigation }) => {
                             Chama Jussa
                         </Text>
 
-
                         {/* =================================================
                             SUBTÍTULO
                         ================================================= */}
@@ -292,7 +299,6 @@ export const Login = ({ navigation }) => {
                         <Text style={LoginStyle.subtitle}>
                             Gerenciamento de Ordens de Serviço
                         </Text>
-
 
                         {/* =================================================
                             E-MAIL
@@ -302,29 +308,18 @@ export const Login = ({ navigation }) => {
                             E-mail
                         </Text>
 
-
                         <TextInput
                             style={LoginStyle.input}
-
                             placeholder="email@email.com"
-
                             keyboardType="email-address"
-
                             autoCapitalize="none"
-
                             autoCorrect={false}
-
                             textContentType="emailAddress"
-
                             value={email}
-
                             onChangeText={setEmail}
-
                             returnKeyType="next"
-
                             editable={!carregando}
                         />
-
 
                         {/* =================================================
                             SENHA
@@ -334,31 +329,19 @@ export const Login = ({ navigation }) => {
                             Senha
                         </Text>
 
-
                         <TextInput
                             style={LoginStyle.input}
-
                             placeholder="Digite sua senha"
-
                             secureTextEntry
-
                             autoCapitalize="none"
-
                             autoCorrect={false}
-
                             textContentType="password"
-
                             value={senha}
-
                             onChangeText={setSenha}
-
                             returnKeyType="done"
-
                             onSubmitEditing={fazerLogin}
-
                             editable={!carregando}
                         />
-
 
                         {/* =================================================
                             BOTÃO
@@ -371,11 +354,8 @@ export const Login = ({ navigation }) => {
                                 carregando &&
                                     LoginStyle.buttonLoading
                             ]}
-
                             activeOpacity={0.8}
-
                             onPress={fazerLogin}
-
                             disabled={carregando}
                         >
 
